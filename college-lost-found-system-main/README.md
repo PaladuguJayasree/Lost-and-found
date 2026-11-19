@@ -124,5 +124,22 @@ The frontend will typically be available at `http://localhost:3000`.
 
 ---
 
+## ☁️ Deployment
+
+The backend also serves the `frontend` folder, so one service runs the whole app.
+
+1. Create a hosted MongoDB database (for example MongoDB Atlas) and copy its connection string.
+2. Create a Node web service (Render, Railway, etc.) with the root directory set to `backend`.
+   - Build command: `npm install`
+   - Start command: `npm start`
+3. Set these environment variables on the service (see `backend/.env.example`):
+   `MONGODB_URI`, `JWT_SECRET`, `EMAIL_USER`, `EMAIL_PASS`. `PORT` is set by most hosts.
+4. Open the service URL. The API and pages share one origin, so no URL changes are needed.
+
+Note: uploaded images are saved to `backend/uploads`. Most hosts reset local disk on restart, so
+attach a persistent disk or move uploads to cloud storage for long-term use.
+
+---
+
 ## 📝 License
 Distributed under the ISC License. 

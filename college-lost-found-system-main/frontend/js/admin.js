@@ -98,7 +98,7 @@ async function loadUnmatched() {
 
 // ✅ Popup image
 function showImage(filename) {
-  document.getElementById("popupImage").src = `http://localhost:5000/uploads/${filename}`;
+  document.getElementById("popupImage").src = `${BASE_URL}/uploads/${filename}`;
   document.getElementById("imageModal").classList.add("active");
 }
 

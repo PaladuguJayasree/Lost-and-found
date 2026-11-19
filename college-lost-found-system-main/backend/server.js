@@ -11,8 +11,21 @@ dotenv.config();
 
 const app = express();
 
+// Fail fast if required settings are missing
+['MONGODB_URI', 'JWT_SECRET'].forEach((key) => {
+  if (!process.env[key]) {
+    console.error(`Missing required environment variable: ${key}`);
+    process.exit(1);
+  }
+});
+
 // Global middleware
-app.use(cors());                 // allow frontend to call backend
+// CORS_ORIGIN: comma-separated allowed origins. Unset allows all (fine when
+// the frontend is served by this same server).
+const allowedOrigins = process.env.CORS_ORIGIN
+  ? process.env.CORS_ORIGIN.split(',').map((o) => o.trim())
+  : true;
+app.use(cors({ origin: allowedOrigins }));
 app.use(express.json());         // parse JSON bodies
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 // serves images via /uploads/<filename>
@@ -32,9 +45,8 @@ app.use('/api/admin', require('./routes/adminRoutes'));
 
 
 
-// TODO: mount your routes later
-// app.use('/api/auth', require('./routes/authRoutes'));
-// app.use('/api/items', require('./routes/itemRoutes'));
+// Serve the frontend from the same server
+app.use(express.static(path.join(__dirname, '..', 'frontend')));
 
 const PORT = process.env.PORT || 5000;
 
